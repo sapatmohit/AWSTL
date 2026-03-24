@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db-server:5432/financialdb
+    username: prod_user
+    password: ${PROD_DB_PASSWORD:securepassword}
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: ERROR
+    com.financial: INFO
+
+external:
+  service:
+    url: https://api.financial.com

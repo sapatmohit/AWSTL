@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:devdb
+    username: sa
+    password: password
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    root: INFO
+    com.financial: DEBUG
+
+external:
+  service:
+    url: https://dev.api.financial.com

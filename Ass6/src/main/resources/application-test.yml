@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    root: WARN
+    com.financial: DEBUG
+
+external:
+  service:
+    url: https://test.api.financial.com
