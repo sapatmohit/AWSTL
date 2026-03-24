@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimized Webpage - Assignment 4</title>
+
+    <!-- Loading MINIFIED CSS -->
+    <link rel="stylesheet" href="style.min.css">
+
+</head>
+
+<body>
+
+    <header class="main-header">
+        <h1>Welcome to the Nature Gallery (Optimized)</h1>
+        <p>This page demonstrates optimized web performance with minified assets and lazy-loaded WebP images.</p>
+    </header>
+
+    <div class="container">
+        <!-- Optimized Images: Lazy Loading and Next-Gen Format (WebP) -->
+        <article class="card">
+            <img src="images/image1.webp" alt="Nature Scene 1" loading="lazy" width="800" height="533">
+            <div class="card-content">
+                <h2>Mountain Landscape</h2>
+                <p>A beautiful mountain landscape. The image is loaded lazily and compressed.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="images/image2.webp" alt="Nature Scene 2" loading="lazy" width="800" height="533">
+            <div class="card-content">
+                <h2>River Valley</h2>
+                <p>A scenic view of a river valley. Lazy loading prevents render blocking.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="images/image3.webp" alt="Nature Scene 3" loading="lazy" width="800" height="533">
+            <div class="card-content">
+                <h2>Forest Trees</h2>
+                <p>A dense forest scene. Using WebP reduces file size by over 50% without noticeable quality loss.</p>
+            </div>
+        </article>
+    </div>
+
+    <!-- Loading MINIFIED JavaScript -->
+    <script src="script.min.js" defer></script>
+</body>
+
+</html>

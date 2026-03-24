@@ -1,0 +1,133 @@
+/* 
+=========================================================
+Unoptimized Webpage Stylesheet
+This stylesheet contains a lot of comments, unnecessary
+whitespace, and unminified code for demonstration purposes.
+=========================================================
+*/
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #ecf0f1;
+    --text-color: #333333;
+    --accent-color: #3498db;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* 
+=========================================================
+HEADER STYLES
+=========================================================
+*/
+
+.main-header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+}
+
+.main-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* 
+=========================================================
+CONTAINER AND GRID STYLES
+=========================================================
+*/
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* 
+=========================================================
+CARD STYLES
+=========================================================
+*/
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    /* These images might be 3000px wide, 
+       but we force them into smaller containers, 
+       wasting massive amounts of bandwidth! */
+    height: auto;
+    display: block;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.card-content p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Unused CSS for demonstration of bloated files */
+.unused-class-1 {
+    display: none;
+    color: red;
+    background: blue;
+    padding: 100px;
+    border: 1px solid black;
+}
+
+.unused-class-2 {
+    font-size: 100px;
+    line-height: 2;
+    margin: 0 auto;
+}
+
+.unused-class-3 {
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+/* End of unoptimized stylesheet */

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unoptimized Webpage - Assignment 4</title>
+
+    <!-- Loading unminified CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header class="main-header">
+        <h1>Welcome to the Nature Gallery</h1>
+        <p>This page demonstrates an unoptimized web page structure.</p>
+    </header>
+
+    <div class="container">
+        <!-- Unoptimized Images (No lazy loading, large sizes) -->
+        <article class="card">
+            <img src="images/image1.jpg" alt="Nature Scene 1">
+            <div class="card-content">
+                <h2>Mountain Landscape</h2>
+                <p>A beautiful mountain landscape. The image is loaded synchronously and is very large.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="images/image2.jpg" alt="Nature Scene 2">
+            <div class="card-content">
+                <h2>River Valley</h2>
+                <p>A scenic view of a river valley. This large image blocks rendering of elements below it untill
+                    loaded.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="images/image3.jpg" alt="Nature Scene 3">
+            <div class="card-content">
+                <h2>Forest Trees</h2>
+                <p>A dense forest scene. Not lazy-loaded, adding to the initial page payload.</p>
+            </div>
+        </article>
+    </div>
+
+    <!-- Loading unminified JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>

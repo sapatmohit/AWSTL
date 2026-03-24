@@ -1,0 +1,24 @@
+{
+  "name": "ass4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "optimize-images.js",
+  "scripts": {
+    "dev": "concurrently \"http-server unoptimized -p 3000 -c-1\" \"http-server optimized -p 3001 -c-1\"",
+    "build": "bash optimize.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "clean-css-cli": "^5.6.3",
+    "sharp": "^0.34.5",
+    "terser": "^5.46.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1"
+  }
+}
