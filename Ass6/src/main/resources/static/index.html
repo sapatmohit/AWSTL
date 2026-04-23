@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Institution | Configuration Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Secure financial configuration management dashboard for monitoring environment-specific settings.">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="var(--accent-color)"/>
+                    <path d="M12 28V12L28 20L12 28Z" fill="white"/>
+                </svg>
+                <h1>FinConfig<span>Pro</span></h1>
+            </div>
+            <div id="profile-badge" class="badge">Loading...</div>
+        </header>
+
+        <section class="dashboard">
+            <div class="card glass">
+                <h2>Environment Status</h2>
+                <div class="status-indicator">
+                    <div id="status-dot" class="dot"></div>
+                    <span id="status-text">Checking system...</span>
+                </div>
+            </div>
+
+            <div class="config-grid">
+                <div class="card glass config-card" id="db-card">
+                    <div class="card-header">
+                        <div class="icon">🗄️</div>
+                        <h3>Database URL</h3>
+                    </div>
+                    <div class="card-content">
+                        <code id="db-url">---</code>
+                        <button class="copy-btn" onclick="copyText('db-url')">Copy</button>
+                    </div>
+                </div>
+
+                <div class="card glass config-card" id="external-card">
+                    <div class="card-header">
+                        <div class="icon">🌐</div>
+                        <h3>External Service</h3>
+                    </div>
+                    <div class="card-content">
+                        <code id="external-url">---</code>
+                        <button class="copy-btn" onclick="copyText('external-url')">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card glass actions">
+                <button id="refresh-btn" class="primary-btn">
+                    <span class="refresh-icon">🔄</span> Refresh Configurations
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Financial Institution Internal Tools. Secure Access Only.</p>
+        </footer>
+    </main>
+
+    <div id="toast" class="toast">Copied to clipboard!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
