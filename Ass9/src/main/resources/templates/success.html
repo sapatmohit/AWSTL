@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Academic Profile | EduPlatform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary: #6366f1; --bg: #f8fafc; --text: #1e293b; --card: #ffffff; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 2rem; }
+        .dashboard { background: var(--card); padding: 3rem; border-radius: 2rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); width: 100%; max-width: 800px; }
+        .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #f1f5f9; }
+        .avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); padding: 5px; }
+        .header-info h1 { margin: 0; font-size: 1.5rem; color: var(--text); }
+        .header-info p { margin: 5px 0 0; color: #64748b; font-size: 0.9rem; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .section-title { grid-column: 1 / -1; font-size: 0.9rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1rem; }
+        .info-group { border-left: 3px solid #f1f5f9; padding-left: 1rem; }
+        .label { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 0.2rem; }
+        .value { font-size: 1rem; color: var(--text); font-weight: 500; }
+        .tag { display: inline-block; background: #eef2ff; color: #6366f1; padding: 2px 10px; border-radius: 1rem; font-size: 0.8rem; margin-right: 5px; margin-top: 5px; }
+        .btn-group { margin-top: 3rem; display: flex; gap: 1rem; }
+        button { flex: 1; padding: 0.8rem; border: none; border-radius: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-edit { background: var(--primary); color: white; }
+        .btn-logout { background: #f1f5f9; color: #475569; }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="profile-header">
+            <img class="avatar" th:src="'https://robohash.org/' + ${regUser.username} + '?set=set4'" alt="Avatar">
+            <div class="header-info">
+                <h1 th:text="${regUser.fullName}">Full Name</h1>
+                <p>@<span th:text="${regUser.username}">username</span> | <span th:text="${regUser.educationLevel}">Level</span></p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="section-title">Contact Information</div>
+            <div class="info-group"><span class="label">Email Address</span><span class="value" th:text="${regUser.email}">email</span></div>
+            <div class="info-group"><span class="label">Phone Number</span><span class="value" th:text="${regUser.phone}">phone</span></div>
+
+            <div class="section-title">Personal Details</div>
+            <div class="info-group"><span class="label">Date of Birth</span><span class="value" th:text="${regUser.dateOfBirth}">dob</span></div>
+            <div class="info-group"><span class="label">Location</span><span class="value" th:text="${regUser.city + ', ' + regUser.state + ', ' + regUser.country}">Pune</span></div>
+
+            <div class="section-title">Academic Profile</div>
+            <div class="info-group"><span class="label">Field of Study</span><span class="value" th:text="${regUser.fieldOfStudy}">CS</span></div>
+            <div class="info-group">
+                <span class="label">Selected Subjects</span>
+                <div><span class="tag" th:each="s : ${regUser.subjects}" th:text="${s}">Subject</span></div>
+            </div>
+            <div class="info-group" style="grid-column: 1 / -1;">
+                <span class="label">Learning Goals</span>
+                <div><span class="tag" th:each="g : ${regUser.learningGoals}" th:text="${g}">Goal</span></div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-edit" onclick="alert('Live editing for all 18 fields is enabled in the backend API!')">Manage Account</button>
+            <a href="/" style="flex: 1; text-decoration: none;"><button class="btn-logout" style="width: 100%;">Sign Out</button></a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#6366f1', '#10b981', '#f59e0b'] });
+        };
+    </script>
+</body>
+</html>

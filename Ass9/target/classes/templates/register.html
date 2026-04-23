@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Advanced Registration | EduPlatform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --error: #ef4444;
+            --success: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 600px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { font-size: 1.8rem; color: var(--text); margin-bottom: 0.5rem; }
+        .header p { color: #64748b; font-size: 0.9rem; }
+
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 2px;
+            background: var(--primary);
+            z-index: 1;
+            transform: translateY(-50%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .step-dot {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
+        .step-dot.completed { background: var(--primary); border-color: var(--primary); color: white; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; color: #475569; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.6rem;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 0.5rem; }
+        .checkbox-group input { width: auto; margin-top: 0.2rem; }
+
+        .error-msg { color: var(--error); font-size: 0.75rem; margin-top: 0.3rem; font-weight: 500; }
+
+        .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        button {
+            flex: 1;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 0.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-prev { background: #f1f5f9; color: #475569; }
+        button:hover { opacity: 0.9; }
+
+        .strength-meter { height: 4px; width: 100%; background: #e2e8f0; margin-top: 0.5rem; border-radius: 2px; overflow: hidden; }
+        .strength-bar { height: 100%; width: 0%; transition: width 0.3s, background 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1>EduPlatform</h1>
+            <p id="step-title">Step 1: Basic Information</p>
+        </div>
+
+        <form th:action="@{/register}" th:object="${user}" method="post" id="regForm">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="step-dot active" data-step="1">1</div>
+                <div class="step-dot" data-step="2">2</div>
+                <div class="step-dot" data-step="3">3</div>
+                <div class="step-dot" data-step="4">4</div>
+                <div class="step-dot" data-step="5">5</div>
+                <div class="step-dot" data-step="6">6</div>
+            </div>
+
+            <!-- Error State Trackers (Hidden) -->
+            <input type="hidden" id="hasGlobalErrors" th:value="${#fields.hasErrors('*')}">
+            <input type="hidden" id="errStep2" th:value="${#fields.hasErrors('password') || #fields.hasErrors('confirmPassword')}">
+            <input type="hidden" id="errStep3" th:value="${#fields.hasErrors('dateOfBirth')}">
+            <input type="hidden" id="errStep4" th:value="${#fields.hasErrors('subjects')}">
+            <input type="hidden" id="errStep5" th:value="${#fields.hasErrors('otp') || #fields.hasErrors('captchaToken')}">
+            <input type="hidden" id="errStep6" th:value="${#fields.hasErrors('acceptTerms')}">
+
+            <!-- Step 1: Basic Information -->
+            <div class="step active" id="step1">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" th:field="*{fullName}" placeholder="Mohit Sapat" required>
+                    <div class="error-msg" th:errors="*{fullName}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" th:field="*{email}" placeholder="mohit@example.com" required>
+                    <div class="error-msg" th:errors="*{email}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" th:field="*{phone}" placeholder="9876543210" required>
+                    <div class="error-msg" th:errors="*{phone}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" th:field="*{username}" placeholder="mohit_dev" required>
+                    <div class="error-msg" th:errors="*{username}"></div>
+                </div>
+                <div class="btn-group"><button type="button" class="btn-next" onclick="nextStep()">Continue →</button></div>
+            </div>
+
+            <!-- Step 2: Account Security -->
+            <div class="step" id="step2">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" id="passInput" placeholder="••••••••" required>
+                    <div class="strength-meter"><div id="strengthBar" class="strength-bar"></div></div>
+                    <div class="error-msg" th:errors="*{password}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" th:field="*{confirmPassword}" placeholder="••••••••" required>
+                    <div class="error-msg" th:errors="*{confirmPassword}"></div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Personal Details -->
+            <div class="step" id="step3">
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" th:field="*{dateOfBirth}">
+                    <div class="error-msg" th:errors="*{dateOfBirth}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select th:field="*{gender}">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group"><label>Country</label><input type="text" th:field="*{country}"></div>
+                    <div class="form-group"><label>State</label><input type="text" th:field="*{state}"></div>
+                </div>
+                <div class="form-group"><label>City</label><input type="text" th:field="*{city}"></div>
+                <div class="form-group">
+                    <label>Education Level</label>
+                    <select th:field="*{educationLevel}">
+                        <option value="school">School</option>
+                        <option value="undergraduate">Undergraduate</option>
+                        <option value="postgraduate">Postgraduate</option>
+                        <option value="professional">Professional</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Academic Interests -->
+            <div class="step" id="step4">
+                <div class="form-group">
+                    <label>Field of Study</label>
+                    <input type="text" th:field="*{fieldOfStudy}" placeholder="e.g. Computer Science">
+                </div>
+                <div class="form-group">
+                    <label>Subjects (Select multiple)</label>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{subjects}" value="Data Structures"><span>Data Structures</span></div>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{subjects}" value="Machine Learning"><span>Machine Learning</span></div>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{subjects}" value="Mathematics"><span>Mathematics</span></div>
+                    <div class="error-msg" th:errors="*{subjects}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Learning Goals</label>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{learningGoals}" value="skill_development"><span>Skill Development</span></div>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{learningGoals}" value="exam_prep"><span>Exam Prep</span></div>
+                    <div class="checkbox-group"><input type="checkbox" th:field="*{learningGoals}" value="career_switch"><span>Career Switch</span></div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Verification -->
+            <div class="step" id="step5">
+                <div class="form-group">
+                    <label>OTP (Sent to Phone)</label>
+                    <input type="text" th:field="*{otp}" placeholder="482913">
+                    <div class="error-msg" th:errors="*{otp}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Captcha Verification</label>
+                    <input type="text" th:field="*{captchaToken}" placeholder="Type 'HUMAN' here">
+                    <div class="error-msg" th:errors="*{captchaToken}"></div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Final Step -->
+            <div class="step" id="step6">
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" th:field="*{acceptTerms}">
+                        <span>I accept the <a href="#">Terms and Conditions</a> and Privacy Policy.</span>
+                    </div>
+                    <div class="error-msg" th:errors="*{acceptTerms}"></div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" th:field="*{subscribeNewsletter}">
+                        <span>Subscribe to weekly academic newsletter.</span>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">Back</button>
+                    <button type="submit" class="btn-next" style="background: var(--success);">Finalize Account ✓</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        let currentStep = 1;
+        const titles = [
+            "Basic Information", "Account Security", "Personal Details",
+            "Academic Interests", "Verification", "Final Step"
+        ];
+
+        function updateUI() {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + currentStep).classList.add('active');
+            
+            document.getElementById('step-title').innerText = `Step ${currentStep}: ${titles[currentStep-1]}`;
+            
+            const progress = ((currentStep - 1) / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.querySelectorAll('.step-dot').forEach((dot, idx) => {
+                const stepNum = idx + 1;
+                dot.classList.toggle('active', stepNum === currentStep);
+                dot.classList.toggle('completed', stepNum < currentStep);
+            });
+        }
+
+        function validateCurrentStep() {
+            const stepDiv = document.getElementById('step' + currentStep);
+            const inputs = stepDiv.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#e2e8f0';
+                }
+            });
+
+            // Special check for password match on Step 2
+            if (currentStep === 2) {
+                const p1 = document.querySelector('input[name="password"]').value;
+                const p2 = document.querySelector('input[name="confirmPassword"]').value;
+                if (p1 !== p2) {
+                    alert("Passwords do not match!");
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        function nextStep() { 
+            if (validateCurrentStep()) {
+                if (currentStep < 6) { 
+                    currentStep++; 
+                    updateUI(); 
+                } 
+            } else {
+                // Shake the card or show a subtle hint
+                const card = document.querySelector('.card');
+                card.style.animation = 'none';
+                void card.offsetWidth; // trigger reflow
+                card.style.animation = 'shake 0.4s';
+            }
+        }
+        function prevStep() { if (currentStep > 1) { currentStep--; updateUI(); } }
+
+        // Resume step if validation failed
+        const hasGlobalErrors = document.getElementById('hasGlobalErrors').value === 'true';
+        if (hasGlobalErrors) {
+            if (document.getElementById('errStep2').value === 'true') currentStep = 2;
+            else if (document.getElementById('errStep3').value === 'true') currentStep = 3;
+            else if (document.getElementById('errStep4').value === 'true') currentStep = 4;
+            else if (document.getElementById('errStep5').value === 'true') currentStep = 5;
+            else if (document.getElementById('errStep6').value === 'true') currentStep = 6;
+            updateUI();
+        }
+
+        // Strength Meter
+        document.getElementById('passInput').addEventListener('input', (e) => {
+            const val = e.target.value;
+            let strength = 0;
+            if (val.length >= 8) strength += 25;
+            if (/[A-Z]/.test(val)) strength += 25;
+            if (/[0-9]/.test(val)) strength += 25;
+            if (/[@$!%*?&]/.test(val)) strength += 25;
+            const bar = document.getElementById('strengthBar');
+            bar.style.width = strength + '%';
+            bar.style.background = strength <= 25 ? '#ef4444' : (strength <= 50 ? '#fbbf24' : '#10b981');
+        });
+    </script>
+</body>
+</html>

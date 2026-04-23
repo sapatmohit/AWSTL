@@ -247,3 +247,72 @@ Design a REST API for an online booking system where users can book, cancel, and
     ```bash
     curl -X DELETE http://localhost:8081/api/reservations/1
     ```
+
+---
+
+## Assignment 8: Customer Feedback System
+
+### Problem Statement
+Build a Spring Boot application that interacts with a relational database to store and retrieve customer feedback for an online service. Optimize the database queries using JPQL and custom queries to retrieve insights such as the most frequent feedback topics.
+
+### Implementation Steps
+1.  **Project Setup**: Initialized Spring Boot with `data-jpa`, `thymeleaf`, and `h2` dependencies.
+2.  **Domain Model**: Created `Feedback.java` Entity with fields for Name, Topic, Rating (1-5), and Comments.
+3.  **Data Access Optimization**:
+    -   Implemented `FeedbackRepository.java` using **JPQL** to aggregate feedback counts by topic.
+    -   Added a **Native SQL Query** to calculate average ratings per category.
+4.  **Service Layer**: Built logic to process feedback and categorize sentiment automatically based on ratings.
+5.  **Premium UI & Standout Features**:
+    -   Designed a dark-themed "Insight Dashboard" using CSS Grid and Glassmorphism.
+    -   Integrated **Chart.js** for visual analytics.
+    -   **CSV Data Export**: Added a one-click button to download all feedback as a structured CSV file.
+    -   **Trending Topics Ticker**: Implemented a dynamic scrolling marquee showing live system stats and trending topics.
+    -   **Sentiment Badges**: Positive/Negative/Neutral tags for quick analysis.
+
+### How to Run
+1.  Navigate to `AWSTL/Ass8`.
+2.  Run the application:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+3.  Open `http://localhost:8082` to view the dashboard and submit feedback.
+4.  Check `http://localhost:8082/h2-console` (JDBC URL: `jdbc:h2:mem:feedbackdb`) to inspect the database.
+
+---
+
+## Assignment 9: Educational Platform Registration System
+
+### Problem Statement
+Create a registration system for an educational platform that validates user input such as email, passwords, and age criteria. Ensure that the system handles invalid data gracefully with custom validation messages for the users.
+
+### Implementation Steps
+1.  **Project Setup**: Configured Spring Boot with `spring-boot-starter-validation` and `thymeleaf`.
+2.  **Validation DTO**: Created `UserRegistrationDto.java` using JSR-303 annotations:
+    -   `@Email`: Validates email format.
+    -   `@Size` & `@Pattern`: Enforces password complexity (Uppercase, Number, Special Char).
+    -   `@Min(18)`: Ensures the user meets the age requirement.
+3.  **Error Handling**: Used `BindingResult` in the controller to catch validation errors and map them to custom UI messages.
+4.  **UI/UX Standout Features**:
+    -   **Massive 6-Step Form**: Implemented a comprehensive registration funnel split into 6 strategic steps:
+        1. Basic Info (Name, Email, Phone, Username)
+        2. Account Security (Password complexity + Confirm)
+        3. Personal Details (DOB, Location, Education Level)
+        4. Academic Interests (Field of Study, Subjects, Goals)
+        5. Verification (OTP + Captcha simulation)
+        6. Final (Terms + Newsletter)
+    -   **Progress-Aware UI**: Features a dynamic progress bar and step-dots that track completion status across all 6 phases.
+    -   **Advanced Validation**:
+        -   Cross-field matching (Password confirmation).
+        -   Complex age verification (13+ logic using `java.time.Period`).
+        -   Array-based validation for Subjects and Goals.
+    -   **Comprehensive Dashboard**: After registration, users see a high-density profile dashboard summarizing all 18+ data points.
+    -   **Success Confetti**: Integrated high-intensity confetti effects on completion.
+
+### How to Run
+1.  Navigate to `AWSTL/Ass9`.
+2.  Run the application:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+3.  Open `http://localhost:8083` to test the registration form and validation logic.
+
